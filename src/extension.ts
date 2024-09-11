@@ -7,23 +7,27 @@ import {ClangdContext} from './clangd-context';
  *  activated the very first time a command is executed.
  */
 export async function activate(context: vscode.ExtensionContext) {
-  const outputChannel = vscode.window.createOutputChannel('clangd');
+  const outputChannel = vscode.window.createOutputChannel('skepud');
   context.subscriptions.push(outputChannel);
 
   const clangdContext = new ClangdContext;
   context.subscriptions.push(clangdContext);
 
+  const serverModule = context.asAbsolutePath('../llvm/build/bin/skepud');
+  console.log(serverModule);
+
   // An empty place holder for the activate command, otherwise we'll get an
   // "command is not registered" error.
+  
   context.subscriptions.push(
-      vscode.commands.registerCommand('clangd.activate', async () => {}));
-  context.subscriptions.push(
+    vscode.commands.registerCommand('clangd.activate', async () => {}));
+    context.subscriptions.push(
       vscode.commands.registerCommand('clangd.restart', async () => {
         await clangdContext.dispose();
-        await clangdContext.activate(context.globalStoragePath, outputChannel);
-      }));
-
-  await clangdContext.activate(context.globalStoragePath, outputChannel);
+        await clangdContext.activate(serverModule, outputChannel);
+      }));    
+  
+  await clangdContext.activate(serverModule, outputChannel);
 
   const shouldCheck = vscode.workspace.getConfiguration('clangd').get(
       'detectExtensionConflicts');

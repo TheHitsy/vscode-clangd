@@ -62,12 +62,12 @@ export class ClangdContext implements vscode.Disposable {
 
   async activate(globalStoragePath: string,
                  outputChannel: vscode.OutputChannel) {
-    const clangdPath = await install.activate(this, globalStoragePath);
-    if (!clangdPath)
+   // const clangdPath = await install.activate(this, globalStoragePath);
+    if (!globalStoragePath)
       return;
 
     const clangd: vscodelc.Executable = {
-      command: clangdPath,
+      command: globalStoragePath,
       args: await config.get<string[]>('arguments'),
       options: {cwd: vscode.workspace.rootPath || process.cwd()}
     };
@@ -157,17 +157,21 @@ export class ClangdContext implements vscode.Disposable {
             // max restart count
             config.get<boolean>('restartAfterCrash') ? /*default*/ 4 : 0);
     this.client.registerFeature(new EnableEditsNearCursorFeature);
+    /*
     typeHierarchy.activate(this);
     inlayHints.activate(this);
     memoryUsage.activate(this);
     ast.activate(this);
     openConfig.activate(this);
     inactiveRegions.activate(this);
+    */
     this.client.start();
     console.log('Clang Language Server is now active!');
+    /*
     fileStatus.activate(this);
     switchSourceHeader.activate(this);
     configFileWatcher.activate(this);
+    */
   }
 
   get visibleClangdEditors(): vscode.TextEditor[] {

@@ -134,6 +134,7 @@ class TreeAdapter implements vscode.TreeDataProvider<ASTNode> {
   readonly onDidChangeTreeData = this._onDidChangeTreeData.event;
 
   public getTreeItem(node: ASTNode): vscode.TreeItem {
+    console.log('ast.ts: node.role: ' + node.role + ', node.kind:' + node.kind);
     const item = new vscode.TreeItem(describe(node.role, node.kind));
     if (node.children && node.children.length > 0)
       item.collapsibleState = vscode.TreeItemCollapsibleState.Expanded;

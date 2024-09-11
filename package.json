@@ -1,6 +1,6 @@
 {
     "name": "vscode-clangd",
-    "displayName": "clangd",
+    "displayName": "skepud",
     "description": "C/C++ completion, navigation, and insights",
     "version": "0.1.26",
     "publisher": "llvm-vs-code-extensions",
@@ -102,7 +102,7 @@
                 },
                 "clangd.arguments": {
                     "type": "array",
-                    "default": [],
+                    "default": ["--function-arg-placeholders=0"],
                     "items": {
                         "type": "string"
                     },
@@ -292,10 +292,15 @@
                 "command": "clangd.typeHierarchy",
                 "key": "Shift+Alt+t",
                 "when": "editorTextFocus"
+            },
+            {
+                "command": "clangd.inlayHints.toggle",
+                "key": "Shift+Alt+m",
+                "when": "editorTextFocus"
             }
         ],
         "menus": {
-            "editor/context": [
+            "editor/context": [ 
                 {
                     "command": "clangd.typeHierarchy",
                     "when": "resourceLangId == cpp && clangd.enableTypeHierarchy",

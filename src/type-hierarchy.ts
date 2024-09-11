@@ -168,6 +168,7 @@ class TypeHierarchyProvider implements
 
   constructor(context: ClangdContext) {
     this.client = context.client;
+    console.log('Type-hierarchy: constructor');
 
     context.subscriptions.push(vscode.commands.registerTextEditorCommand(
         'clangd.typeHierarchy', this.reveal, this));
@@ -190,6 +191,7 @@ class TypeHierarchyProvider implements
   }
 
   public async gotoItem(item: TypeHierarchyItem) {
+    console.log('Type-hierarchy: gotoItem');
     const uri = vscode.Uri.parse(item.uri);
     const range =
         this.client.protocol2CodeConverter.asRange(item.selectionRange);
@@ -224,12 +226,16 @@ class TypeHierarchyProvider implements
   }
 
   public getTreeItem(element: TypeHierarchyItem): vscode.TreeItem {
+    console.log('typehierarchy: getTreeItem');
+
     return new TypeHierarchyTreeItem(element);
   }
 
   public getParent(element: TypeHierarchyItem): TypeHierarchyItem|null {
     // This function is implemented so that VSCode lets us call
     // this.treeView.reveal().
+    console.log('typehierarchy: getParent');
+
     if (element.parents) {
       if (element.parents.length === 1) {
         return element.parents[0];
@@ -242,6 +248,7 @@ class TypeHierarchyProvider implements
 
   public async getChildren(element
                            ?: TypeHierarchyItem): Promise<TypeHierarchyItem[]> {
+    console.log('typehierarchy: getChildren');
     if (!this.root)
       return [];
     if (!element)
